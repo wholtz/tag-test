@@ -23,9 +23,6 @@ jobs:
       uses: docker/metadata-action@f3c886e26b64d7e5ef5ff5f574efc88b317b8451
       with:
         images: willholtz/test-tag
-    - name: dump tags
-      id: dump_tags
-      run: echo "tags: ${{ steps.get_metadata.outputs.tags }}"
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
     - name: Login to DockerHub
