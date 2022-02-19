@@ -25,7 +25,7 @@ jobs:
         images: willholtz/test-tag
     - name: dump tags
       id: dump_tags
-      run: echo "tags: ${{ steps.get_metadata.outputs.tags }}; labels: ${{ steps.get_metadata.outputs.labels }}"
+      run: echo "tags: ${{ steps.get_metadata.outputs.tags }}"
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
     - name: Login to DockerHub
