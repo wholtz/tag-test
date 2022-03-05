@@ -27,8 +27,8 @@ jobs:
     - name: Construct base_image
       id: get_base_image
       env:
-         IMAGE: ${{ image }}
-         SIZE: ${{ size }}
+         IMAGE: ${{ matrix.image }}
+         SIZE: ${{ matrix.size }}
       run: echo "::set-output name=base_image::debian:${IMAGE}${SIZE:+-$SIZE}"
     - name: Get docker metadata
       id: get_metadata
