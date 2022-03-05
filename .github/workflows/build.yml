@@ -36,6 +36,9 @@ jobs:
       with:
         images: willholtz/test-tag
         tags: |
+            type=sha
+            type=sha,suffix=-${{ matrix.image }},enable=${{ matrix.size == '' }}
+            type=sha,suffix=-${{ matrix.image }}-${{ maxtrix.size }},enable=${{ matrix.size != '' }}
             type=semver,pattern=${{ matrix.image }},enable=${{ matrix.size == '' }}
             type=semver,pattern={{version}}-${{ matrix.image }},enable=${{ matrix.size ==  '' }}
             type=semver,pattern={{major}}.{{minor}}-${{ matrix.image }},enable=${{ matrix.size == '' }}
