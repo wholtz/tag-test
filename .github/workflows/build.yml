@@ -57,7 +57,7 @@ jobs:
       with:
         platforms: linux/amd64
         push: true
-        build-args:
-        - base_image: ${{ steps.get_base_image.outputs.base_image }}
+        build-args: |
+          BASE_IMAGE=${{ steps.get_base_image.outputs.base_image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
