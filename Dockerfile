@@ -1,4 +1,4 @@
-ARG VERSION=1.0.0
+ARG VERSION=1.0.1
 
 FROM debian:bullseye-slim
 
