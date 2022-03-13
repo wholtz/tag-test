@@ -58,7 +58,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},enable=${{ matrix.image == env.LATEST_DEBIAN  && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{version}},enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{major}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}-{{minor}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{version}}-${{ steps.get_base_image.outputs.tag }},value=${{ steps.get_version.outputs.version }}
             type=sha,enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }}
             type=sha,suffix=-${{ steps.get_base_image.outputs.tag }}
