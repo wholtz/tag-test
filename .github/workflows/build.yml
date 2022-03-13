@@ -8,6 +8,10 @@ on:
     tags:
       - 'v*'
 
+env:
+  LATEST_DEBIAN: 'bullseye'
+  DEFAULT_SIZE: 'slim'
+
 jobs:
   build_docker_image_and_push:
     runs-on: ubuntu-latest
@@ -35,19 +39,27 @@ jobs:
       uses: docker/metadata-action@f3c886e26b64d7e5ef5ff5f574efc88b317b8451
       with:
         images: willholtz/test-tag
+        # latest
+        # base_image
+        # major
+        # major.minor
+        # major.minor.patch
+        # major-base_image
+        # major.minor-base_image
+        # major.minor.patch-base_image
+        # sha
+        # sha-base_image
         tags: |
-            type=raw,value=latest,enable=${{ matrix.size == 'slim' && matrix.image == 'bullseye' }}
-            type=sha
-            type=sha,suffix=-${{ matrix.image }},enable=${{ matrix.size == '' }}
-            type=sha,suffix=-${{ matrix.image }}-${{ matrix.size }},enable=${{ matrix.size != '' }}
-            type=semver,pattern=${{ matrix.image }},enable=${{ matrix.size == '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{version}}-${{ matrix.image }},enable=${{ matrix.size ==  '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}}-${{ matrix.image }},enable=${{ matrix.size == '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}-${{ matrix.image }},enable=${{ matrix.size == '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern=${{ matrix.image }}-${{ matrix.size }},enable=${{ matrix.size != '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{version}}-${{ matrix.image }}-${{ matrix.size }},enable=${{ matrix.size !=  '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}}-${{ matrix.image }}-${{ matrix.size }},enable=${{ matrix.size != '' }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}-${{ matrix.image }}-${{ matrix.size }},enable=${{ matrix.size != '' }},value=${{ steps.get_version.outputs.version }}
+            type=raw,value=latest,enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }}
+            type=raw,value=${{ steps.get_base_image.outputs.base_image }}
+            type=semver,pattern={{major}},enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ matrix.image == env.LATEST_DEBIAN  && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{version}},enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}-${{ steps.get_base_image.outputs.base_image}},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}-{{minor}}-${{ steps.get_base_image.outputs.base_image}},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{version}}-${{ steps.get_base_image.outputs.base_image }},value=${{ steps.get_version.outputs.version }}
+            type=sha,enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }}
+            type=sha,suffix=-${{ steps.get_base_image.outputs.base_image }}
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
     - name: Login to DockerHub
