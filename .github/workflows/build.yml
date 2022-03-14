@@ -36,6 +36,7 @@ jobs:
       run: |
         echo "::set-output name=image::debian:${IMAGE}${SIZE:+-$SIZE}"
         echo "::set-output name=tag::${IMAGE}${SIZE:+-$SIZE}"
+        echo "::set-output name=is_default::$([ "$IMAGE" = "$LATEST_DEBIAN" ] && [ "$SIZE" == "$DEFAULT_SIZE" ] && echo 1 || echo 0)"
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@f3c886e26b64d7e5ef5ff5f574efc88b317b8451
@@ -52,15 +53,15 @@ jobs:
         # sha
         # sha-base_image
         tags: |
-            type=raw,value=latest,enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }}
+            type=raw,value=latest,enable=${{ steps.get_base_image.outputs.is_default }}
             type=raw,value=${{ steps.get_base_image.outputs.tag }}
-            type=semver,pattern={{major}},enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ matrix.image == env.LATEST_DEBIAN  && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
-            type=semver,pattern={{version}},enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}},enable=${{ steps.get_base_image.outputs.is_default }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ steps.get_base_image.outputs.is_default }},value=${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{version}},enable=${{ steps.get_base_image.outputs.is_default }},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{major}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{major}}.{{minor}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{version}}-${{ steps.get_base_image.outputs.tag }},value=${{ steps.get_version.outputs.version }}
-            type=sha,enable=${{ matrix.image == env.LATEST_DEBIAN && matrix.size == env.DEFAULT_SIZE }}
+            type=sha,enable=${{ steps.get_base_image.outputs.is_default }}
             type=sha,suffix=-${{ steps.get_base_image.outputs.tag }}
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
