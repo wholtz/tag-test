@@ -36,7 +36,7 @@ jobs:
       run: |
         echo "::set-output name=image::debian:${IMAGE}${SIZE:+-$SIZE}"
         echo "::set-output name=tag::${IMAGE}${SIZE:+-$SIZE}"
-        echo "::set-output name=is_default::$([ "$IMAGE" = "$LATEST_DEBIAN" ] && [ "$SIZE" == "$DEFAULT_SIZE" ] && echo 1 || echo 0)"
+        echo "::set-output name=is_default::$([ "$IMAGE" = "$LATEST_DEBIAN" ] && [ "$SIZE" == "$DEFAULT_SIZE" ] && echo true || echo false)"
     - name: Get docker metadata
       id: get_metadata
       uses: docker/metadata-action@f3c886e26b64d7e5ef5ff5f574efc88b317b8451
