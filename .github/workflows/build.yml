@@ -61,8 +61,8 @@ jobs:
             type=semver,pattern={{major}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{major}}.{{minor}}-${{ steps.get_base_image.outputs.tag}},value=${{ steps.get_version.outputs.version }}
             type=semver,pattern={{version}}-${{ steps.get_base_image.outputs.tag }},value=${{ steps.get_version.outputs.version }}
-            type=sha,enable=${{ steps.get_base_image.outputs.is_default }}
-            type=sha,suffix=-${{ steps.get_base_image.outputs.tag }}
+            type=sha,prefix=-git,enable=${{ steps.get_base_image.outputs.is_default }}
+            type=sha,prefix=-git,suffix=-${{ steps.get_base_image.outputs.tag }}
     - name: Setup docker buildx
       uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
     - name: Login to DockerHub
