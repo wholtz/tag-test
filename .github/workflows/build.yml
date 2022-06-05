@@ -42,6 +42,7 @@ jobs:
       uses: docker/metadata-action@f3c886e26b64d7e5ef5ff5f574efc88b317b8451
       with:
         images: willholtz/test-tag
+        flavor: latest=false
         # latest
         # base_image
         # major
