@@ -83,4 +83,4 @@ jobs:
 
     - name: Output tag list
       id: list_tags
-      run: echo "${{ fromJSON(steps.get_metadata.outputs.json) }}"
+      run: echo "${{ steps.get_metadata.outputs.json }}"
