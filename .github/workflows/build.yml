@@ -80,7 +80,12 @@ jobs:
           BASE_IMAGE=${{ steps.get_base_image.outputs.image }}
         tags: ${{ steps.get_metadata.outputs.tags }}
         labels: ${{ steps.get_metadata.outputs.labels}}
-
     - name: Output tag list
-      id: list_tags
+      id: output_list_tags
       run: echo "${{ steps.get_metadata.outputs.json }}"
+    - name: Output base_image
+      id: output_base_image
+      run: |
+           echo "${{ steps.get_base_image.outputs.image }}"
+           echo "${{ steps.get_base_image.outputs.tag }}"
+           echo "${{ steps.get_base_image.outputs.is_default }}"
